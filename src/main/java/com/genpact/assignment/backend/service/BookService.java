@@ -15,6 +15,9 @@ public interface BookService {
 	Book getBookForALibraryAndBookId(Long bookId,Long libraryId) throws BookNotFoundException;
 	Book saveBookForALibrary(Book book,Long libraryId) throws LibraryNotFoundException;
 	Book updateBookForALibrary(Book book,Long libraryId,Long bookId) throws LibraryNotFoundException;
+	boolean deleteBookForALibrary(Long bookId,Long libraryId) throws BookNotFoundException;
+	
+	boolean deleteBook(Long bookId) throws BookNotFoundException;
 	
 
 }

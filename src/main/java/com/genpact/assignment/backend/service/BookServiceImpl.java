@@ -70,6 +70,23 @@ public class BookServiceImpl implements BookService{
 		}).orElseThrow(()-> new LibraryNotFoundException("Library id not found : "+libraryId));
 
 	}
+
+	@Override
+	public boolean deleteBookForALibrary(Long bookId, Long libraryId) throws BookNotFoundException {
+		 return bookRepository.findByIdAndLibraryId(bookId, libraryId).map(book -> {
+	            bookRepository.delete(book);
+	            return true;
+	        }).orElseThrow(() -> new BookNotFoundException("Book not found with id " + bookId));
+		
+	}
+
+	@Override
+	public boolean deleteBook(Long bookId) throws BookNotFoundException {
+		return bookRepository.findById(bookId).map(book -> {
+            bookRepository.delete(book);
+            return true;
+        }).orElseThrow(() -> new BookNotFoundException("Book not found with id " + bookId));
+	}
 	
 
 }

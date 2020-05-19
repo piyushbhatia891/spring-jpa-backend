@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +37,14 @@ public class BooksController {
 		return booksService.getAllBooks();
 	}
 	
+	//Fetch the list of all books
+	@GetMapping(path = "/books/{bookId}")
+	public ResponseEntity<Book> getBook(@PathVariable(value = "bookId")Long bookId) throws BookNotFoundException {
+		Book book=booksService.getBookById(bookId);
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(book);
+	}
+	
 	//Fetch the list of all books for specific libraryId
 	@GetMapping(path = "/library/{libraryId}/books")
 	public List<Book> getBooks(@PathVariable(value = "libraryId") Long libraryId) {
@@ -54,12 +63,12 @@ public class BooksController {
 	
 	//Create new book in specific library
 	@PostMapping(path ="/library/{libraryId}/books") 
-	public ResponseEntity<String> addNewBook(@Validated @RequestBody Book book,
+	public ResponseEntity<Book> addNewBook(@Validated @RequestBody Book book,
 			@PathVariable(value = "libraryId") Long libraryId)
 	throws LibraryNotFoundException{
 		Book savedBook=booksService.saveBookForALibrary(book, libraryId);
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body("Created With Book Id as : "+savedBook.getId());
+				.body(savedBook);
 	}
 
 	//Update existing book in specific library
@@ -71,5 +80,33 @@ public class BooksController {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body("Updated Book Id as : "+savedBook.getId());
 	}
+	
+	//Delete existing book in specific library
+	@DeleteMapping(path ="/library/{libraryId}/book/{bookId}") 
+		public ResponseEntity<String> deleteExistingBook(@Validated @RequestBody Book book,
+				@PathVariable(value = "libraryId") Long libraryId,@PathVariable(value = "bookId")Long bookId)
+		throws BookNotFoundException{
+			boolean deleteBookFlag=booksService.deleteBookForALibrary(bookId, libraryId);
+			if(deleteBookFlag)
+				return ResponseEntity.status(HttpStatus.OK)
+					.body("Deleted Book Id as : "+bookId);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("There was an error encountered on server");
+					
+		}
+	
+	//Delete existing book in specific library
+		@DeleteMapping(path ="/books/{bookId}") 
+			public ResponseEntity<String> deleteExistingBook(@Validated @RequestBody Book book,
+					@PathVariable(value = "bookId")Long bookId)
+			throws BookNotFoundException{
+				boolean deleteBookFlag=booksService.deleteBook(bookId);
+				if(deleteBookFlag)
+					return ResponseEntity.status(HttpStatus.OK)
+						.body("Deleted Book Id as : "+bookId);
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+						.body("There was an error encountered on server");
+						
+			}
 	
 }

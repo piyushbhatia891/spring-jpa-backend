@@ -42,4 +42,12 @@ public class LibraryServiceImpl implements LibraryService{
 		
 	}
 
+	@Override
+	public boolean deleteLibrary(Long libraryId) throws LibraryNotFoundException {
+		return libraryRepository.findById(libraryId).map(library -> {
+            libraryRepository.delete(library);
+            return true;
+        }).orElseThrow(() -> new LibraryNotFoundException("Library not found with id " + libraryId));
+	}
+
 }

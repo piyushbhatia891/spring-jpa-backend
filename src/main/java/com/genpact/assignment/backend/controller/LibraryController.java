@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,9 +45,21 @@ public class LibraryController {
 
 	//create new library entity object
 	@PostMapping(path ="/library") 
-	public ResponseEntity<String> addNewLibrary(@Validated @RequestBody Library library) {
+	public ResponseEntity<Library> addNewLibrary(@Validated @RequestBody Library library) {
 		Library savedLibrary=libraryService.saveLibrary(library);
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body("Created library with id : "+savedLibrary.getId());
-	}	
+				.body(savedLibrary);
+	}
+	
+	//create new library entity object
+		@DeleteMapping(path ="/library/{libraryId}") 
+		public ResponseEntity<String> addNewLibrary(@PathVariable(value = "libraryId")Long libraryId) throws LibraryNotFoundException {
+			boolean deleteLibraryFlag=libraryService.deleteLibrary(libraryId);
+			if(deleteLibraryFlag)
+				return ResponseEntity.status(HttpStatus.OK)
+					.body("Deleted Library Id as : "+libraryId);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("There was an error encountered on server");
+		}
+	
 }
