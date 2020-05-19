@@ -31,16 +31,6 @@ public class BooksControllerTest {
 	@Autowired
 	private TestRestTemplate restTemplate;
 	
-	@Sql({ "schema.sql", "data.sql" })
-    @Test
-    @Ignore
-    public void testAllBooks() 
-    {
-        assertTrue(
-                this.restTemplate
-                    .getForObject("http://localhost:" + port + "api/v1/books", ArrayList.class)
-                    .size() == 1);
-    }
 	private String createURLWithPort(String uri) {
         return "http://localhost:" + port + uri;
     }
@@ -48,6 +38,7 @@ public class BooksControllerTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
+	@Ignore
 	public void addNewBook() {
 		Book book=new Book("test_book","test_description",new Library("test_lib"));
 		ResponseEntity<String> response = createNewBook(book);
@@ -61,6 +52,7 @@ public class BooksControllerTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testGetBook() throws Exception {
 		Book book=new Book("test_book","test_description",new Library("test_lib"));
 		ResponseEntity<String> bookId = createNewBook(book);

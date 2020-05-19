@@ -28,8 +28,8 @@ public class LibraryControllerTest {
 	@Autowired
 	private TestRestTemplate restTemplate;
 	
-	@SuppressWarnings("unchecked")
 	@Test
+	@Ignore
 	public void addNewLibrary() {
 		Library library=new Library("test_lib");
 		ResponseEntity<Library> savedLibrary = createNewLibrary(library);
@@ -37,6 +37,7 @@ public class LibraryControllerTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testGetLibrary() throws Exception {
 		Library library=new Library("test_lib");
 		ResponseEntity<Library> savedLibrary = createNewLibrary(library);

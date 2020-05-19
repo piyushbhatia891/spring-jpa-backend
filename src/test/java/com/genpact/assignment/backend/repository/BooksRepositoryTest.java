@@ -1,5 +1,7 @@
 package com.genpact.assignment.backend.repository;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -37,24 +39,32 @@ public class BooksRepositoryTest {
 	@Ignore
 	public void testGetBooks() {
 		Library library=new Library("test");
-		libraryRepository.save(library);
 		Book book=new Book("test title","test description",library);
-		booksRepository.save(book);
-		Book getSavedBook=booksRepository.findByBookName("test title");
-		assertNotNull(getSavedBook);
-		assertEquals(book.getBookName(), getSavedBook.getBookName());
+		Book savedBook=booksRepository.save(book);
+		assertNotNull(savedBook);
 	}
 	
 	@Test
 	@Ignore
-	public void testPostBook() {
+	public void testDeleteBook() {
 		Library library=new Library("test");
-		libraryRepository.save(library);
 		Book book=new Book("test title","test description",library);
-		booksRepository.save(book);
-		assertEquals("test tile", book.getBookName());
+		Book savedBook=booksRepository.save(book);
+		booksRepository.delete(book);
+		boolean present=booksRepository.findById(savedBook.getId())
+			.isPresent();
+		assertTrue(present==false);
 	}
 	
-	
+	@Test
+	@Ignore
+	public void testCreateNewBook() {
+		Library library=new Library("test");
+		Book book=new Book("test title","test description",library);
+		Book savedBook=booksRepository.save(book);
+		boolean present=booksRepository.findById(savedBook.getId())
+				.isPresent();
+			assertTrue(present==true);
+	}
 	
 }

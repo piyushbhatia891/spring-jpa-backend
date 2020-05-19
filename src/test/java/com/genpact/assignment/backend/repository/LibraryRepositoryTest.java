@@ -1,8 +1,10 @@
 package com.genpact.assignment.backend.repository;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import org.junit.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,19 +25,31 @@ public class LibraryRepositoryTest {
 	}
 	
 	@Test
-	public void testGetBooks() {
+	@Ignore
+	public void testGetLibraries() {
 		Library library=new Library("test library");
-		libraryRepository.save(library);
-		Library getSavedLibrary=libraryRepository.findByLibraryName("test library");
-		assertNotNull(getSavedLibrary);
-		assertEquals(library.getLibraryName(), getSavedLibrary.getLibraryName());
+		Library savedLibrary=libraryRepository.save(library);
+		assertNotNull(savedLibrary);
 	}
 	
 	@Test
-	public void testPostBook() {
+	@Ignore
+	public void testCreatingNewLibrary() {
 		Library library=new Library("test library");
-		libraryRepository.save(library);
-		assertEquals("test library", library.getLibraryName());
+		Library savedLibrary=libraryRepository.save(library);
+		boolean present=libraryRepository.findById(savedLibrary.getId())
+				.isPresent();
+			assertTrue(present==true);
 	}
 	
+	@Test
+	@Ignore
+	public void testDeleteLibrary() {
+		Library library=new Library("test");
+		Library lib=libraryRepository.save(library);
+		libraryRepository.delete(library);
+		boolean present=libraryRepository.findById(lib.getId())
+			.isPresent();
+		assertTrue(present==false);
+	}
 }
