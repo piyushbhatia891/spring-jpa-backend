@@ -2,6 +2,8 @@ package com.genpact.assignment.backend.controller;
 
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +26,7 @@ public class LibraryControllerTest {
 	
 	@Sql({ "schema.sql", "data.sql" })
     @Test
+    @Ignore
     public void testAllLibraries() 
     {
         assertTrue(

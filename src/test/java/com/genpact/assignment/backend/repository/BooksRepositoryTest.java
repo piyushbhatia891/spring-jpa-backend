@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import javax.annotation.security.RunAs;
 
+import org.junit.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,7 @@ public class BooksRepositoryTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testGetBooks() {
 		Library library=new Library("test");
 		libraryRepository.save(library);
@@ -44,6 +46,7 @@ public class BooksRepositoryTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testPostBook() {
 		Library library=new Library("test");
 		libraryRepository.save(library);
