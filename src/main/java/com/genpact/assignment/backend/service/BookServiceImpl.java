@@ -12,7 +12,7 @@ import com.genpact.assignment.backend.model.Book;
 import com.genpact.assignment.backend.repository.BooksRepository;
 import com.genpact.assignment.backend.repository.LibraryRepository;
 
-@Service
+
 public class BookServiceImpl implements BookService{
 	
 	@Autowired

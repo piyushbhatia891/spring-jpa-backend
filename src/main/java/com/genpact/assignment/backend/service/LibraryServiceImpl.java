@@ -12,7 +12,6 @@ import com.genpact.assignment.backend.model.Book;
 import com.genpact.assignment.backend.model.Library;
 import com.genpact.assignment.backend.repository.LibraryRepository;
 
-@Service
 public class LibraryServiceImpl implements LibraryService{
 
 	@Autowired
