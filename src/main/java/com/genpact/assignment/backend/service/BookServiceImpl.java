@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.genpact.assignment.backend.exception.BookNotFoundException;
+import com.genpact.assignment.backend.exception.DBConnectionNotFoundException;
 import com.genpact.assignment.backend.exception.LibraryNotFoundException;
 import com.genpact.assignment.backend.model.Book;
 import com.genpact.assignment.backend.pool.DBConnectionPool;
@@ -99,7 +100,7 @@ public class BookServiceImpl implements BookService{
 	}
 	
 	@Override
-	public List<Book> getAllBooksFromConnectionPool() {
+	public List<Book> getAllBooksFromConnectionPool() throws DBConnectionNotFoundException {
 	Connection connection=dbConnectionPool.getDBConnection();
 	ResultSet rs = null;
 	PreparedStatement statement = null;
@@ -130,6 +131,8 @@ public class BookServiceImpl implements BookService{
 			dbConnectionPool.releaseDBConnection(connection);
 		}
 	}
+	else
+		throw new DBConnectionNotFoundException("DB Connecction not found");
 	return books;
 	}
 		

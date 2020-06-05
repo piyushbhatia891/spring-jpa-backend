@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.genpact.assignment.backend.exception.BookNotFoundException;
+import com.genpact.assignment.backend.exception.DBConnectionNotFoundException;
 import com.genpact.assignment.backend.exception.LibraryNotFoundException;
 import com.genpact.assignment.backend.model.Book;
 
@@ -20,7 +21,7 @@ public interface BookService {
 	boolean deleteBookForALibrary(Long bookId,Long libraryId) throws BookNotFoundException;
 	
 	boolean deleteBook(Long bookId) throws BookNotFoundException;
-	List<Book> getAllBooksFromConnectionPool();
+	List<Book> getAllBooksFromConnectionPool()throws DBConnectionNotFoundException;
 	
 
 }
