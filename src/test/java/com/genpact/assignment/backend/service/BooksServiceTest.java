@@ -42,12 +42,4 @@ public class BooksServiceTest {
 		
 	}
 	
-	@Test
-	@Ignore
-	public void getBooksFromConnectionPool() throws DBConnectionNotFoundException {
-		Mockito.when(booksRepository.findAll()).thenReturn((Iterable<Book>) any(Iterable.class));
-		List<Book> returnedBooks=booksService.getAllBooksFromConnectionPool();
-		assertThat(returnedBooks.size(),is(1));
-		
-	}
 }
