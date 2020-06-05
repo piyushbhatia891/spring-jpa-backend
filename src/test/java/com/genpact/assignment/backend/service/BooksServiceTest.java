@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.genpact.assignment.backend.exception.DBConnectionNotFoundException;
 import com.genpact.assignment.backend.model.Book;
 import com.genpact.assignment.backend.model.Library;
 import com.genpact.assignment.backend.repository.BooksRepository;
@@ -43,7 +44,7 @@ public class BooksServiceTest {
 	
 	@Test
 	@Ignore
-	public void getBooksFromConnectionPool() {
+	public void getBooksFromConnectionPool() throws DBConnectionNotFoundException {
 		Mockito.when(booksRepository.findAll()).thenReturn((Iterable<Book>) any(Iterable.class));
 		List<Book> returnedBooks=booksService.getAllBooksFromConnectionPool();
 		assertThat(returnedBooks.size(),is(1));
