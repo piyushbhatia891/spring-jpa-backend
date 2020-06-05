@@ -20,6 +20,7 @@ public interface BookService {
 	boolean deleteBookForALibrary(Long bookId,Long libraryId) throws BookNotFoundException;
 	
 	boolean deleteBook(Long bookId) throws BookNotFoundException;
+	List<Book> getAllBooksFromConnectionPool();
 	
 
 }

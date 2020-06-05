@@ -40,4 +40,13 @@ public class BooksServiceTest {
 		assertThat(returnedBooks.size(),is(1));
 		
 	}
+	
+	@Test
+	@Ignore
+	public void getBooksFromConnectionPool() {
+		Mockito.when(booksRepository.findAll()).thenReturn((Iterable<Book>) any(Iterable.class));
+		List<Book> returnedBooks=booksService.getAllBooksFromConnectionPool();
+		assertThat(returnedBooks.size(),is(1));
+		
+	}
 }

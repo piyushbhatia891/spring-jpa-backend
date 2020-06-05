@@ -1,7 +1,13 @@
 package com.genpact.assignment.backend.service;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Semaphore;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.genpact.assignment.backend.exception.BookNotFoundException;
 import com.genpact.assignment.backend.exception.LibraryNotFoundException;
 import com.genpact.assignment.backend.model.Book;
+import com.genpact.assignment.backend.pool.DBConnectionPool;
 import com.genpact.assignment.backend.repository.BooksRepository;
 import com.genpact.assignment.backend.repository.LibraryRepository;
 
@@ -20,6 +27,9 @@ public class BookServiceImpl implements BookService{
 	
 	@Autowired
 	private LibraryRepository libraryRepository;
+	
+	@Autowired
+	private DBConnectionPool dbConnectionPool;
 
 	@Override
 	public List<Book> getAllBooks() {
@@ -88,5 +98,41 @@ public class BookServiceImpl implements BookService{
         }).orElseThrow(() -> new BookNotFoundException("Book not found with id " + bookId));
 	}
 	
-
+	@Override
+	public List<Book> getAllBooksFromConnectionPool() {
+	Connection connection=dbConnectionPool.getDBConnection();
+	ResultSet rs = null;
+	PreparedStatement statement = null;
+	List<Book> books=new ArrayList();
+	if(connection!=null) {
+		try {
+		statement=connection.prepareStatement("Select * from books");
+		rs= statement.executeQuery();
+		while(rs.next()) {
+			Book book=new Book();
+			book.setBookName(rs.getString("book_name"));
+			book.setBookDescription(rs.getString("book_description"));
+			book.setId(rs.getLong("id"));
+			books.add(book);
+		}
+		}catch(SQLException e)
+		{
+			System.out.print(e.getMessage());
+			return new ArrayList();
+		}
+		finally {
+			try {
+				rs.close();
+				statement.close();
+			} catch (SQLException e) {
+				System.out.print(e.getMessage());
+			}
+			dbConnectionPool.releaseDBConnection(connection);
+		}
+	}
+	return books;
+	}
+		
+		
+	
 }
