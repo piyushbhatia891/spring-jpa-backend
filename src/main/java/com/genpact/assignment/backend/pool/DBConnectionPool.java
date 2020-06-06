@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-@Component
 public class DBConnectionPool {
 	List<Connection> availableConnections = new ArrayList<Connection>();
 	private List<Connection> usedConnections = new ArrayList<Connection>();
