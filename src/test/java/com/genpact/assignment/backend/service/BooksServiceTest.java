@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -23,7 +24,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 
-@ExtendWith(MockitoExtension.class)
+@RunWith(MockitoJUnitRunner.class)
 public class BooksServiceTest {
 	
 	@InjectMocks
@@ -34,9 +35,9 @@ public class BooksServiceTest {
 	
 	
 	@Test
-	@Ignore
 	public void getBooks() {
-		Mockito.when(booksRepository.findAll()).thenReturn((Iterable<Book>) any(Iterable.class));
+		Mockito.when(booksRepository.findAll())
+		.thenReturn((Iterable<Book>) any(Iterable.class));
 		List<Book> returnedBooks=booksService.getAllBooks();
 		assertThat(returnedBooks.size(),is(1));
 		
